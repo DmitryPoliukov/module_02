@@ -44,13 +44,13 @@ public class CertificateDaoImpl implements CertificateDao {
     private static final String SQL_REMOVE_TAG = "DELETE FROM gift_certificate_m2m_tag WHERE " +
             "gift_certificate_id = ? tag_id = ?";
 
-    private static final String SQL_READ_BONDING_TAGS = "SELECT id,name FROM tag JOIN gift_certificate_id ON tag_id=id WHERE gift_certificate_id = ?";
+    private static final String SQL_READ_BONDING_TAGS = "SELECT t.id, name FROM tag t JOIN gift_certificate gc ON t.id=gc.id WHERE gift_certificate_id = ?";
 
     private static final String SQL_DELETE_BONDING_TAGS_BY_TAG_ID = "DELETE FROM gift_certificate_m2m_tag WHERE tag_id = ?";
 
     private static final String SQL_DELETE_BONDING_TAGS_BY_CERTIFICATE_ID =
             "DELETE FROM gift_certificate_m2m_tag WHERE gift_certificate_id = ?";
-
+/*
     private static final RowMapper<Certificate> CERTIFICATE_ROW_MAPPER =
             (rs, rowNum) -> {
                 Certificate certificate = new Certificate();
@@ -65,6 +65,8 @@ public class CertificateDaoImpl implements CertificateDao {
                 certificate.setLastUpdateDate(rs.getObject(7, LocalDateTime.class));
                 return certificate;
             };
+
+ */
 
     @Override
     public Certificate createCertificate(Certificate certificate) {
@@ -87,7 +89,7 @@ public class CertificateDaoImpl implements CertificateDao {
     @Override
     public Optional<Certificate> read(int certificateId) {
         return jdbcTemplate
-                .queryForStream(SQL_READ_CERTIFICATE, CERTIFICATE_ROW_MAPPER, certificateId)
+                .queryForStream(SQL_READ_CERTIFICATE, new BeanPropertyRowMapper<>(Certificate.class), certificateId)
                 .findAny();
     }
 /////////////-----------------------------------------

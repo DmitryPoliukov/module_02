@@ -7,8 +7,8 @@ public class Certificate {
     private int id;
     private String name;
     private String description;
-    private double price;
-    private int duration;
+    private Double price;
+    private Integer duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private List<Tag> tags;
