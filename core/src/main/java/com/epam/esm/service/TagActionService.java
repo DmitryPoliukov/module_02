@@ -5,7 +5,19 @@ import com.epam.esm.exception.ResourceValidationException;
 
 public interface TagActionService {
 
+    /**
+     * Is applicable boolean.
+     *
+     * @param tagAction the tag action
+     * @return the boolean
+     */
     boolean isApplicable(TagAction tagAction);
 
+    /**
+     * Process action.
+     *
+     * @param tagAction the tag action
+     * @throws ResourceValidationException
+     */
     void processAction(TagAction tagAction) throws ResourceValidationException;
 }
