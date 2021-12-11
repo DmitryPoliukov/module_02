@@ -2,6 +2,7 @@ package com.epam.esm;
 
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -92,7 +93,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 /////////////-----------------------------------------
     @Override
-    public List<Certificate> readAll() {
+    public List<Certificate> readAll(CertificateRequestParameter parameter) {
         return null;
     }
 
@@ -107,12 +108,6 @@ public class CertificateDaoImpl implements CertificateDao {
                 certificate.getCreateDate(),
                 certificate.getLastUpdateDate(),
                 certificate.getId());
-    }
-
-//////////////-------
-    @Override
-    public List<Certificate> readByTag(String tagName) {
-        return null;
     }
 
     @Override
