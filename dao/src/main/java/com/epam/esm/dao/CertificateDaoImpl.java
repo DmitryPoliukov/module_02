@@ -1,8 +1,9 @@
-package com.epam.esm;
+package com.epam.esm.dao;
 
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.CertificateRequestParameter;
+import com.epam.esm.entity.SqlData;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,10 +21,12 @@ import java.util.Optional;
 public class CertificateDaoImpl implements CertificateDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final SqlHandler sqlHandler;
 
     @Autowired
-    public CertificateDaoImpl(JdbcTemplate jdbcTemplate) {
+    public CertificateDaoImpl(JdbcTemplate jdbcTemplate, SqlHandler sqlHandler) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sqlHandler = sqlHandler;
     }
 
     private static final String SQL_CREATE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, " +
@@ -49,23 +52,6 @@ public class CertificateDaoImpl implements CertificateDao {
 
     private static final String SQL_DELETE_BONDING_TAGS_BY_CERTIFICATE_ID =
             "DELETE FROM gift_certificate_m2m_tag WHERE gift_certificate_id = ?";
-/*
-    private static final RowMapper<Certificate> CERTIFICATE_ROW_MAPPER =
-            (rs, rowNum) -> {
-                Certificate certificate = new Certificate();
-                certificate.setId(rs.getInt(1));
-                certificate.setName(rs.getString(2));
-                certificate.setDescription(rs.getString(3));
-                Double price = rs.getObject(4) == null ? null : rs.getDouble(4);
-                certificate.setPrice(price);
-                Integer duration = rs.getObject(5) == null ? null : rs.getInt(5);
-                certificate.setDuration(duration);
-                certificate.setCreateDate(rs.getObject(6, LocalDateTime.class));
-                certificate.setLastUpdateDate(rs.getObject(7, LocalDateTime.class));
-                return certificate;
-            };
-
- */
 
     @Override
     public Certificate createCertificate(Certificate certificate) {
@@ -91,10 +77,13 @@ public class CertificateDaoImpl implements CertificateDao {
                 .queryForStream(SQL_READ_CERTIFICATE, new BeanPropertyRowMapper<>(Certificate.class), certificateId)
                 .findAny();
     }
-/////////////-----------------------------------------
+
+
     @Override
     public List<Certificate> readAll(CertificateRequestParameter parameter) {
-        return null;
+        SqlData sqlData = sqlHandler.generateSqlDataForReadAllRequest(parameter);
+        return jdbcTemplate.query(
+                sqlData.getRequest(), new BeanPropertyRowMapper<>(Certificate.class), sqlData.getArgs().toArray());
     }
 
     @Override
