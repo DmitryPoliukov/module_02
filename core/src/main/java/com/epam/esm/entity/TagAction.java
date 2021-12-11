@@ -3,6 +3,7 @@ package com.epam.esm.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TagAction {
+
     public enum ActionType {
         @JsonProperty(value = "add")
         ADD,

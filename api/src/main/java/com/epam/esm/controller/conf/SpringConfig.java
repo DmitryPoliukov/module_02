@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = "com.epam.esm")
 @PropertySource("classpath:dataSource.properties")
 
@@ -34,7 +36,7 @@ public class SpringConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(userName);
         dataSource.setPassword(password);
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         return dataSource;
     }
 

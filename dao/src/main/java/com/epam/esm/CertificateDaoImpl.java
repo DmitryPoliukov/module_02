@@ -6,14 +6,12 @@ import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,23 +26,23 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     private static final String SQL_CREATE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, " +
-            "price, duration, create_table, last_update_date) VALUES (?,?,?,?,?,?)";
+            "price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
 
     private static final String SQL_READ_CERTIFICATE = "SELECT id, name, description, price, duration, " +
             "create_date, last_update_date from gift_certificate WHERE id = ?";
 
-    private static final String SQL_UPDATE = "UPDATE gift_certificates SET name = ?, description = ?, price = ?, duration = ?," +
+    private static final String SQL_UPDATE = "UPDATE gift_certificate SET name = ?, description = ?, price = ?, duration = ?," +
             " create_date = ?, last_update_date = ? WHERE id = ?";
 
-    private static final String SQL_DELETE_CERTIFICATE = "DELETE FROM gift_certificates WHERE id = ?";
+    private static final String SQL_DELETE_CERTIFICATE = "DELETE FROM gift_certificate WHERE id = ?";
 
     private static final String SQL_ADD_TAG = "INSERT INTO gift_certificate_m2m_tag (tag_id, gift_certificate_id) " +
             "VALUES (?, ?)";
 
     private static final String SQL_REMOVE_TAG = "DELETE FROM gift_certificate_m2m_tag WHERE " +
-            "gift_certificate_id = ? tag_id = ?";
+            "gift_certificate_id = ? AND tag_id = ?";
 
-    private static final String SQL_READ_BONDING_TAGS = "SELECT t.id, name FROM tag t JOIN gift_certificate gc ON t.id=gc.id WHERE gift_certificate_id = ?";
+    private static final String SQL_READ_BONDING_TAGS = "SELECT t.id, name FROM tag t JOIN gift_certificate_m2m_tag m2m ON t.id=m2m.tag_id WHERE gift_certificate_id = ?";
 
     private static final String SQL_DELETE_BONDING_TAGS_BY_TAG_ID = "DELETE FROM gift_certificate_m2m_tag WHERE tag_id = ?";
 
