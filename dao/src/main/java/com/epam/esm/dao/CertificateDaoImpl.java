@@ -1,6 +1,5 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,14 +19,11 @@ public class CertificateDaoImpl implements CertificateDao {
     private final JdbcTemplate jdbcTemplate;
     private final SqlHandler sqlHandler;
 
-
     @Autowired
     public CertificateDaoImpl(JdbcTemplate jdbcTemplate, SqlHandler sqlHandler) {
         this.jdbcTemplate = jdbcTemplate;
         this.sqlHandler = sqlHandler;
     }
-
-
 
     private static final String SQL_CREATE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, " +
             "price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
