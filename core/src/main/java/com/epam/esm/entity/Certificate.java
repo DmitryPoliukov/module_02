@@ -1,13 +1,23 @@
 package com.epam.esm.entity;
 
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Certificate {
     private Integer id;
+
+    @Size(min = 1,max = 45)
     private String name;
+
+    @Size(min = 1,max = 45)
     private String description;
+
+    @PositiveOrZero
     private Double price;
+
+    @PositiveOrZero
     private Integer duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

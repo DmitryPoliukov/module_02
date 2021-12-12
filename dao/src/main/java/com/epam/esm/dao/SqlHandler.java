@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class SqlHandler {
 
     private static final String SELECT =
-            "SELECT gift_certificates.id,gift_certificates.name,description,price,duration,create_date,last_update_date FROM gift_certificates ";
+            "SELECT gift_certificate.id,gift_certificate.name,description,price,duration,create_date,last_update_date FROM gift_certificate ";
     private static final String JOIN =
-            " JOIN certificates_tags ON certificate_id=gift_certificates.id JOIN tag ON tag_id=tag.id ";
+            " JOIN gift_certificate_m2m_tag ON gift_certificate_id=gift_certificate.id JOIN tag ON tag_id=tag.id ";
     private static final String TABLE_NAME_KEY = "table_name";
     public static final String ID_FIELD = "id";
     public static final String EMPTY_STRING = "";

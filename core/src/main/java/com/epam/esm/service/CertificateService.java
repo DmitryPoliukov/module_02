@@ -49,15 +49,16 @@ public interface CertificateService {
     /**
      * Update patch certificate.
      *
-     * @param certificate the certificate
-     * @return the certificate
+     * @param certificate
+     * @return
+     * @throws ResourceValidationException
      */
     CertificatePatch updatePatch(CertificatePatch certificate) throws ResourceValidationException;
 
     /**
-     * Delete.
+     * Delete certificate.
      *
-     * @param id the id
+     * @param id
      * @throws ResourceValidationException
      */
     void delete(int id) throws ResourceValidationException;
