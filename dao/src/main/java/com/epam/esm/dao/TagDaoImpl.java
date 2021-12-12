@@ -1,6 +1,5 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -14,7 +13,6 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class TagDaoImpl implements TagDao {
 
 

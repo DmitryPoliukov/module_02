@@ -17,17 +17,27 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+
 public class CertificateDaoImpl implements CertificateDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final SqlHandler sqlHandler;
 
+    public CertificateDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
+    //private final SqlHandler sqlHandler;
+/*
     @Autowired
     public CertificateDaoImpl(JdbcTemplate jdbcTemplate, SqlHandler sqlHandler) {
         this.jdbcTemplate = jdbcTemplate;
         this.sqlHandler = sqlHandler;
     }
+
+ */
+
+
 
     private static final String SQL_CREATE_CERTIFICATE = "INSERT INTO gift_certificate (name, description, " +
             "price, duration, create_date, last_update_date) VALUES (?,?,?,?,?,?)";
@@ -78,13 +88,17 @@ public class CertificateDaoImpl implements CertificateDao {
                 .findAny();
     }
 
-
+/*
     @Override
     public List<Certificate> readAll(CertificateRequestParameter parameter) {
         SqlData sqlData = sqlHandler.generateSqlDataForReadAllRequest(parameter);
         return jdbcTemplate.query(
                 sqlData.getRequest(), new BeanPropertyRowMapper<>(Certificate.class), sqlData.getArgs().toArray());
     }
+
+ */
+
+
 
     @Override
     public int update(Certificate certificate) {

@@ -1,9 +1,9 @@
 package com.epam.esm.service;
 
-
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class CertificateServiceImpl implements CertificateService {
 
     public static final int ONE_UPDATED_ROW = 1;
@@ -36,6 +35,11 @@ public class CertificateServiceImpl implements CertificateService {
         createdCertificate.setTags(certificate.getTags());
         addTagsToDb(createdCertificate);
         return createdCertificate;
+    }
+/////////////------------------------
+    @Override
+    public List<Certificate> readAll(CertificateRequestParameter parameter) {
+        return null;
     }
 
     @Override

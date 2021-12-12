@@ -4,9 +4,11 @@ import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface CertificateService {
 
     /**

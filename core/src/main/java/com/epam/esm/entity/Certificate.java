@@ -16,8 +16,9 @@ public class Certificate {
     public Certificate() {
     }
 
-    public Certificate(String name, String description, Double price, Integer duration,
-                       LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+    public Certificate(Integer id, String name, String description, Double price, Integer duration, LocalDateTime createDate,
+                       LocalDateTime lastUpdateDate, List<Tag> tags) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
