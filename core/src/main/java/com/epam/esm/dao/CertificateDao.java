@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificatePatch;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
 import org.springframework.stereotype.Repository;
@@ -33,7 +34,7 @@ public interface CertificateDao {
      * @param parameter the requests parameters for certificate
      * @return the list
      */
-  //  List<Certificate> readAll(CertificateRequestParameter parameter);
+    List<Certificate> readAll(CertificateRequestParameter parameter);
 
     /**
      * Update int.
@@ -96,7 +97,7 @@ public interface CertificateDao {
      * @param certificate the certificate
      * @return the int
      */
-    //int updatePatch(CertificatePatch certificate)
+    int updatePatch(CertificatePatch certificate);
 
 
 

@@ -3,6 +3,7 @@ package com.epam.esm.service;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificatePatch;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CertificateServiceImpl implements CertificateService {
 
     public static final int ONE_UPDATED_ROW = 1;
@@ -36,10 +38,15 @@ public class CertificateServiceImpl implements CertificateService {
         addTagsToDb(createdCertificate);
         return createdCertificate;
     }
-/////////////------------------------
+
+
     @Override
     public List<Certificate> readAll(CertificateRequestParameter parameter) {
-        return null;
+        List<Certificate> certificates = certificateDao.readAll(parameter);
+        for (Certificate certificate : certificates) {
+            certificate.setTags(certificateDao.readCertificateTags(certificate.getId()));
+        }
+        return certificates;
     }
 
     @Override
@@ -61,6 +68,17 @@ public class CertificateServiceImpl implements CertificateService {
         }
         certificateDao.deleteBondingTagsByCertificateId(certificate.getId());
         addTagsToDb(certificate);
+        return certificate;
+    }
+
+    @Override
+    public CertificatePatch updatePatch(CertificatePatch certificate) throws ResourceValidationException {
+        LocalDateTime timeNow = LocalDateTime.now();
+        certificate.setLastUpdateDate(timeNow);
+        int numberOfUpdatedRows = certificateDao.updatePatch(certificate);
+        if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
+            throw new ResourceValidationException();
+        }
         return certificate;
     }
 

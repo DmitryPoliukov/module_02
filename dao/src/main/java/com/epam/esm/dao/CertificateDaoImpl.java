@@ -1,10 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.dao.CertificateDao;
-import com.epam.esm.entity.Certificate;
-import com.epam.esm.entity.CertificateRequestParameter;
-import com.epam.esm.entity.SqlData;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,25 +14,18 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public class CertificateDaoImpl implements CertificateDao {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public CertificateDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final SqlHandler sqlHandler;
 
 
-    //private final SqlHandler sqlHandler;
-/*
     @Autowired
     public CertificateDaoImpl(JdbcTemplate jdbcTemplate, SqlHandler sqlHandler) {
         this.jdbcTemplate = jdbcTemplate;
         this.sqlHandler = sqlHandler;
     }
-
- */
 
 
 
@@ -88,7 +78,7 @@ public class CertificateDaoImpl implements CertificateDao {
                 .findAny();
     }
 
-/*
+
     @Override
     public List<Certificate> readAll(CertificateRequestParameter parameter) {
         SqlData sqlData = sqlHandler.generateSqlDataForReadAllRequest(parameter);
@@ -96,7 +86,6 @@ public class CertificateDaoImpl implements CertificateDao {
                 sqlData.getRequest(), new BeanPropertyRowMapper<>(Certificate.class), sqlData.getArgs().toArray());
     }
 
- */
 
 
 
@@ -142,6 +131,12 @@ public class CertificateDaoImpl implements CertificateDao {
     @Override
     public int deleteBondingTagsByCertificateId(int certificateId) {
         return jdbcTemplate.update(SQL_DELETE_BONDING_TAGS_BY_CERTIFICATE_ID, certificateId);
+    }
+
+    @Override
+    public int updatePatch(CertificatePatch certificate) {
+        SqlData sqlData = sqlHandler.generateSqlDataForUpdateRequest(certificate);
+        return jdbcTemplate.update(sqlData.getRequest(), sqlData.getArgs().toArray());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificatePatch;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
@@ -51,7 +52,7 @@ public interface CertificateService {
      * @param certificate the certificate
      * @return the certificate
      */
-    //CertificatePatch updatePatch(CertificatePatch certificate);
+    CertificatePatch updatePatch(CertificatePatch certificate) throws ResourceValidationException;
 
     /**
      * Delete.

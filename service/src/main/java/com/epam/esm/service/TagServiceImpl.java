@@ -7,12 +7,13 @@ import com.epam.esm.entity.TagAction;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Service
 public class TagServiceImpl implements TagService {
 
     public static final int ONE_UPDATED_ROW = 1;

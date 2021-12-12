@@ -1,5 +1,6 @@
 package com.epam.esm.dao;
 
+import com.epam.esm.entity.CertificatePatch;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.SortParam;
 import com.epam.esm.entity.SqlData;
@@ -53,7 +54,7 @@ public class SqlHandler {
         }
         return new SqlData(request.toString(), args);
     }
-/*
+
     public SqlData generateSqlDataForUpdateRequest(CertificatePatch inputCertificate) {
         List<Field> notNullFields = takeNotNullFields(inputCertificate);
         String requestParameters = generateRequestParametersForUpdate(notNullFields);
@@ -63,7 +64,6 @@ public class SqlHandler {
         return new SqlData(sqlRequest, args);
     }
 
- */
 
     List<Field> takeNotNullFields(Object obj) {
         Class clazz = obj.getClass();
