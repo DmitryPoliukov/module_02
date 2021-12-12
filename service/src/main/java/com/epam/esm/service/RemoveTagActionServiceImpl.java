@@ -7,7 +7,7 @@ import com.epam.esm.exception.ResourceValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+@Service
 public class RemoveTagActionServiceImpl implements TagActionService  {
     private final TagDao tagDao;
     private final CertificateDao certificateDao;

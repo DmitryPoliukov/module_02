@@ -5,13 +5,12 @@ import com.epam.esm.entity.TagAction;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -41,6 +40,12 @@ public class TagController {
     @ResponseStatus(HttpStatus.OK)
     public List<Tag> readTags() {
         return tagService.readAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Tag createTag(@RequestBody @Valid Tag tag) {
+        return tagService.create(tag);
     }
 
     @PostMapping("/action")

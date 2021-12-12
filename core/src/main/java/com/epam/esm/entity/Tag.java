@@ -1,7 +1,12 @@
 package com.epam.esm.entity;
 
+import javax.validation.constraints.Size;
+
 public class Tag {
+
     private int id;
+
+    @Size(min=1,max = 45)
     private String name;
 
     public int getId() {
