@@ -2,9 +2,7 @@ package com.epam.esm.service;
 
 import com.epam.esm.entity.TagAction;
 import com.epam.esm.exception.ResourceValidationException;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface TagActionService {
 
     /**

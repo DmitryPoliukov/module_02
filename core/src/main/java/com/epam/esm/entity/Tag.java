@@ -33,6 +33,10 @@ public class Tag {
         this.name = name;
     }
 
+    public Tag(@Size(min = 1, max = 45) String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Tag{");

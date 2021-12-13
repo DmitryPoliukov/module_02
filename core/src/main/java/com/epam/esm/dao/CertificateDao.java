@@ -4,12 +4,10 @@ import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.CertificatePatch;
 import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface CertificateDao {
 
     /**

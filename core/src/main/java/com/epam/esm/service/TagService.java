@@ -4,11 +4,9 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.TagAction;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.exception.ResourceValidationException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface TagService {
 
     /**
