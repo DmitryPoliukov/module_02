@@ -59,6 +59,11 @@ public class Certificate {
         this.lastUpdateDate = lastUpdateDate;
     }
 
+    public Certificate(Integer id, @Size(min = 1, max = 45) String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public void setPrice(Double price) {
         this.price = price;
     }

@@ -1,6 +1,8 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.Certificate;
+import com.epam.esm.entity.CertificatePatch;
+import com.epam.esm.entity.CertificateRequestParameter;
 import com.epam.esm.entity.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,38 +64,105 @@ class CertificateDaoImplTest {
 
     @Test
     void readAll() {
+        Certificate certificate1 = givenExistingCertificate1();
+        Certificate certificate2 = givenExistingCertificate2();
+        List<Certificate> expectedList = List.of(certificate1, certificate2);
+
+        List<Certificate> actualList = certificateDao.readAll(new CertificateRequestParameter());
+        assertEquals(expectedList, actualList);
     }
 
     @Test
     void update() {
+        Certificate expectedCertificate = new Certificate(1, "new name");
+
+        certificateDao.update(expectedCertificate);
+
+        Certificate actualCertificate = certificateDao.read(expectedCertificate.getId()).get();
+        assertEquals(expectedCertificate, actualCertificate);
     }
 
     @Test
     void readCertificateTags() {
+        Certificate certificate = givenExistingCertificate2();
+        Tag tag1 = givenExistingTag1();
+        Tag tag2 = givenExistingTag2();
+        List<Tag> expectedTags = List.of(tag1, tag2);
+
+        List<Tag> actualTags = certificateDao.readCertificateTags(certificate.getId());
+        assertEquals(expectedTags, actualTags);
     }
 
     @Test
     void addTag() {
+        Certificate certificate = givenExistingCertificate1();
+        Tag tag = givenExistingTag1();
+        List<Tag> expectedTags = List.of(tag);
+
+        certificateDao.addTag(tag.getId(), certificate.getId());
+
+        List<Tag> actualTags = certificateDao.readCertificateTags(certificate.getId());
+        assertEquals(expectedTags, actualTags);
     }
 
     @Test
     void removeTag() {
+        Certificate certificate = givenExistingCertificate2();
+        Tag tag1 = givenExistingTag1();
+        Tag tag2 = givenExistingTag2();
+        List<Tag> expectedTags = List.of(tag1);
+
+        certificateDao.removeTag(tag2.getId(), certificate.getId());
+
+        List<Tag> actualTags = certificateDao.readCertificateTags(certificate.getId());
+        assertEquals(expectedTags, actualTags);
     }
 
     @Test
     void deleteCertificate() {
+        Certificate certificate = givenExistingCertificate1();
+
+        certificateDao.deleteCertificate(certificate.getId());
+
+        Optional<Certificate> actualCertificate = certificateDao.read(certificate.getId());
+        assertTrue(actualCertificate.isEmpty());
     }
 
     @Test
     void deleteBondingTagsByTagId() {
+        Certificate certificate = givenExistingCertificate2();
+        Tag tag = givenExistingTag1();
+        List<Tag> expectedTags = List.of(tag);
+
+        certificateDao.deleteBondingTagsByTagId(certificate.getId());
+
+        List<Tag> actualTags = certificateDao.readCertificateTags(certificate.getId());
+        assertEquals(expectedTags, actualTags);
     }
 
     @Test
     void deleteBondingTagsByCertificateId() {
+        Certificate certificate = givenExistingCertificate2();
+        List<Tag> expectedTags = Collections.emptyList();
+
+        certificateDao.deleteBondingTagsByCertificateId(certificate.getId());
+
+        List<Tag> actualTags = certificateDao.readCertificateTags(certificate.getId());
+        assertEquals(expectedTags, actualTags);
     }
 
     @Test
     void updatePatch() {
+        Certificate expectedCertificate = givenExistingCertificate1();
+        expectedCertificate.setName("new name");
+        CertificatePatch updateCertificate = new CertificatePatch();
+        updateCertificate.setId(1);
+        updateCertificate.setName("new name");
+
+        certificateDao.updatePatch(updateCertificate);
+
+        Certificate actualCertificate = certificateDao.read(expectedCertificate.getId()).get();
+        assertEquals(expectedCertificate, actualCertificate);
     }
 
     private static Certificate givenExistingCertificate1() {
