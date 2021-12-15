@@ -1,13 +1,17 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.Tag;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,29 +20,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 class TagDaoImplTest {
 
     public static final int ID_FOR_3_TAG = 3;
     public static final int NOT_EXISTED_TAG_ID = 99999;
+
     @Autowired
     TagDao tagDao;
 
-    @BeforeEach
-    void setUp() {
-        Tag tag1 = givenExistingTag1();
-        Tag tag2 = givenExistingTag2();
-        tagDao.create(tag1);
-        tagDao.create(tag2);
-    }
 
     @Test
     void create() {
+
         Tag expectedTag = givenNewTagWithoutId();
 
         Tag actualTag = tagDao.create(expectedTag);
@@ -46,7 +45,7 @@ class TagDaoImplTest {
         expectedTag.setId(ID_FOR_3_TAG);
         assertEquals(expectedTag, actualTag);
     }
-
+/*
     @ParameterizedTest
     @MethodSource("readDataProvider")
     void read(int actualId, Optional<Tag> expectedTag) {
@@ -60,25 +59,22 @@ class TagDaoImplTest {
                 arguments(NOT_EXISTED_TAG_ID, Optional.empty()));
     }
 
+ */
+
     @Test
     void readAll() {
-        Tag tag1 = givenExistingTag1();
-        Tag tag2 = givenExistingTag2();
-        List<Tag> expectedList = List.of(tag1, tag2);
+
+        Tag tag2 = tagDao.read(2).get();
+        Tag tag3 = tagDao.read(3).get();
+        Tag tag4 = tagDao.read(4).get();
+        List<Tag> expectedList = List.of(tag2, tag3, tag4);
 
         List<Tag> actualList = tagDao.readAll();
         assertEquals(expectedList, actualList);
     }
 
-    @Test
-    void delete() {
-        Tag tag = givenExistingTag1();
 
-        tagDao.delete(tag.getId());
-
-        assertTrue(tagDao.read(tag.getId()).isEmpty());
-    }
-
+/*
     @ParameterizedTest
     @MethodSource("readTagByNameDataProvider")
     void readTest(Tag wantedTag, Optional<Tag> expectedTag) {
@@ -86,21 +82,29 @@ class TagDaoImplTest {
         assertEquals(expectedTag, actualTag);
     }
 
-    static Stream<Arguments> readTagByNameDataProvider() {
+    Stream<Arguments> readTagByNameDataProvider() {
+        Tag tag1 = tagDao.read(1).get();
+        Tag tag2 = tagDao.read(2).get();
         return Stream.of(
-                arguments(givenExistingTag1(), Optional.of(givenExistingTag1())),
+                arguments(tag1, Optional.of(tag1)),
                 arguments(givenNewTagWithoutId(), Optional.empty()));
     }
 
-    private static Tag givenExistingTag1() {
-        return new Tag(1, "first tag");
-    }
+ */
 
-    private static Tag givenExistingTag2() {
-        return new Tag(2, "second tag");
+    @Test
+    void delete() {
+        Tag tag1 = tagDao.read(1).get();
+
+        tagDao.delete(tag1.getId());
+
+        assertTrue(tagDao.read(tag1.getId()).isEmpty());
+        tagDao.create(tag1);
     }
 
     private static Tag givenNewTagWithoutId() {
         return new Tag("third tag");
     }
+
+
 }
