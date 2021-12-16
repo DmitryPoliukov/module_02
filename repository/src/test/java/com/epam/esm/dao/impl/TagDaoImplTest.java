@@ -1,4 +1,4 @@
-package com.epam.esm.core;
+package com.epam.esm.dao.impl;
 
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.entity.Tag;

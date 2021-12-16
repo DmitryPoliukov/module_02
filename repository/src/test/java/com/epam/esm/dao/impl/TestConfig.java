@@ -1,4 +1,4 @@
-package com.epam.esm.core;
+package com.epam.esm.dao.impl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

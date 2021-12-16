@@ -4,18 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Certificate {
+
     private Integer id;
-
-    //@Size(min = 1,max = 45) add to dto
     private String name;
-
-    //@Size(min = 1,max = 45) add to dto
     private String description;
-
-    //@PositiveOrZero add to dto
     private Double price;
-
-    //@PositiveOrZero add to dto
     private Integer duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
