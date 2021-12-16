@@ -1,10 +1,10 @@
 package com.epam.esm.service.impl;
 
 
-import com.epam.esm.core.dao.CertificateDao;
-import com.epam.esm.core.dao.TagDao;
-import com.epam.esm.core.dao.entity.Tag;
-import com.epam.esm.core.dao.entity.TagAction;
+import com.epam.esm.repository.dao.CertificateDao;
+import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.entity.Tag;
+import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.TagActionService;

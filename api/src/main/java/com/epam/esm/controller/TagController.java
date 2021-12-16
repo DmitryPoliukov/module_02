@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.core.dao.entity.Tag;
-import com.epam.esm.core.dao.entity.TagAction;
+import com.epam.esm.repository.entity.Tag;
+import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.TagService;

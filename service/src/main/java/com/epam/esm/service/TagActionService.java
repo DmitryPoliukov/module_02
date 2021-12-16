@@ -1,7 +1,7 @@
 package com.epam.esm.service;
 
 
-import com.epam.esm.core.dao.entity.TagAction;
+import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceValidationException;
 
 public interface TagActionService {

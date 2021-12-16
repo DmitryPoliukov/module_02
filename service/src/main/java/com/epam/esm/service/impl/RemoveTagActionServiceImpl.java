@@ -1,9 +1,9 @@
 package com.epam.esm.service.impl;
 
 
-import com.epam.esm.core.dao.CertificateDao;
-import com.epam.esm.core.dao.TagDao;
-import com.epam.esm.core.dao.entity.TagAction;
+import com.epam.esm.repository.dao.CertificateDao;
+import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.TagActionService;
 import org.springframework.beans.factory.annotation.Autowired;

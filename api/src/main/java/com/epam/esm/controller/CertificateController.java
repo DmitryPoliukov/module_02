@@ -1,8 +1,8 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.core.dao.entity.Certificate;
-import com.epam.esm.core.dao.entity.CertificatePatch;
-import com.epam.esm.core.dao.entity.CertificateRequestParameter;
+import com.epam.esm.repository.entity.Certificate;
+import com.epam.esm.repository.entity.CertificatePatch;
+import com.epam.esm.repository.entity.CertificateRequestParameter;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.CertificateService;
