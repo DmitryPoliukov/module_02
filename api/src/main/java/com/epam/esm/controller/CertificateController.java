@@ -1,10 +1,10 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.Certificate;
-import com.epam.esm.entity.CertificatePatch;
-import com.epam.esm.entity.CertificateRequestParameter;
-import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.exception.ResourceValidationException;
+import com.epam.esm.core.dao.entity.Certificate;
+import com.epam.esm.core.dao.entity.CertificatePatch;
+import com.epam.esm.core.dao.entity.CertificateRequestParameter;
+import com.epam.esm.service.exception.ResourceNotFoundException;
+import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

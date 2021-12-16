@@ -1,9 +1,9 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.Tag;
-import com.epam.esm.entity.TagAction;
-import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.exception.ResourceValidationException;
+import com.epam.esm.core.dao.entity.Tag;
+import com.epam.esm.core.dao.entity.TagAction;
+import com.epam.esm.service.exception.ResourceNotFoundException;
+import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

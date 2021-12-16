@@ -11,5 +11,5 @@ rootProject.name = 'lab_02'
 include 'dao'
 include 'service'
 include 'api'
-include 'core'
+
 
