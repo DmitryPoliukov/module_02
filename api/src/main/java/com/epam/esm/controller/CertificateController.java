@@ -4,7 +4,6 @@ import com.epam.esm.repository.entity.Certificate;
 import com.epam.esm.repository.entity.CertificatePatch;
 import com.epam.esm.repository.entity.CertificateRequestParameter;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +28,8 @@ public class CertificateController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Certificate> readCertificate(@PathVariable int id) {
-        Certificate certificate = null;
-        try {
-            certificate = certificateService.read(id);
-        } catch (ResourceNotFoundException e) {
-            //log
-        }
+        Certificate certificate = certificateService.read(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(certificate);
     }
 
@@ -53,7 +48,7 @@ public class CertificateController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Certificate> updateCertificatePut(
-            @PathVariable int id, @Valid @RequestBody Certificate certificate) throws ResourceValidationException {
+            @PathVariable int id, @Valid @RequestBody Certificate certificate) {
         certificate.setId(id);
         Certificate updatedCertificate = certificateService.updatePut(certificate);
         return ResponseEntity.status(HttpStatus.OK).body(updatedCertificate);
@@ -61,7 +56,7 @@ public class CertificateController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<CertificatePatch> updateCertificatePatch(
-            @PathVariable int id, @Valid @RequestBody CertificatePatch certificate) throws ResourceValidationException {
+            @PathVariable int id, @Valid @RequestBody CertificatePatch certificate) {
         certificate.setId(id);
         CertificatePatch updatedCertificate = certificateService.updatePatch(certificate);
         return ResponseEntity.status(HttpStatus.OK).body(updatedCertificate);
@@ -69,7 +64,7 @@ public class CertificateController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCertificate(@PathVariable int id) throws ResourceValidationException {
+    public void deleteCertificate(@PathVariable int id) {
         certificateService.delete(id);
     }
 }

@@ -2,9 +2,7 @@ package com.epam.esm.service;
 
 
 import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.ResourceValidationException;
 
 import java.util.List;
 
@@ -38,13 +36,6 @@ public interface TagService {
      *
      * @param id the id
      */
-    void delete(int id) throws ResourceValidationException;
+    void delete(int id);
 
-    /**
-     * Process tag action.
-     *
-     * @throws ResourceValidationException
-     * @param action the action
-     */
-    void processTagAction(TagAction action) throws ResourceValidationException;
 }

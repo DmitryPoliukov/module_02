@@ -1,9 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.repository.entity.TagAction;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,12 +25,8 @@ public class TagController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Tag> readTag(@PathVariable int id) {
-        Tag tag = null;
-        try {
-            tag = tagService.read(id);
-        } catch (ResourceNotFoundException e) {
-            //log
-        }
+        Tag tag = tagService.read(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(tag);
     }
 
@@ -47,26 +41,24 @@ public class TagController {
     public Tag createTag(@RequestBody @Valid Tag tag) {
         return tagService.create(tag);
     }
-
+/*
     @PostMapping("/action")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> processTagAction(@RequestBody TagAction action) {
         try {
             tagService.processTagAction(action);
-        } catch (ResourceValidationException e) {
+        } catch (ResourcesValidationException e) {
             //log
         }
         return ResponseEntity.ok().build();
     }
 
+ */
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable int id) {
-        try {
-            tagService.delete(id);
-        } catch (ResourceValidationException e) {
-            //log
-        }
+        tagService.delete(id);
     }
 
 }

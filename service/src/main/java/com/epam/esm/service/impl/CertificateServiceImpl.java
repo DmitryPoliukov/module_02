@@ -52,21 +52,21 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public Certificate read(int id) throws ResourceNotFoundException {
+    public Certificate read(int id) {
         Optional<Certificate> certificate = certificateDao.read(id);
         certificate.ifPresent(
                 actualCertificate -> actualCertificate.setTags(certificateDao.readCertificateTags(id)));
-        return certificate.orElseThrow(ResourceNotFoundException::new);
+        return certificate.orElseThrow(ResourceNotFoundException.notFoundWithCertificateId(id));
     }
 
     @Override
-    public Certificate updatePut(Certificate certificate) throws ResourceValidationException {
+    public Certificate updatePut(Certificate certificate) {
         LocalDateTime timeNow = LocalDateTime.now();
         certificate.setCreateDate(timeNow);
         certificate.setLastUpdateDate(timeNow);
         int numberOfUpdatedRows = certificateDao.update(certificate);
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw new ResourceValidationException();
+            throw ResourceValidationException.validationWithCertificateId(certificate.getId()).get();
         }
         certificateDao.deleteBondingTagsByCertificateId(certificate.getId());
         addTagsToDb(certificate);
@@ -74,22 +74,22 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public CertificatePatch updatePatch(CertificatePatch certificate) throws ResourceValidationException {
+    public CertificatePatch updatePatch(CertificatePatch certificate) {
         LocalDateTime timeNow = LocalDateTime.now();
         certificate.setLastUpdateDate(timeNow);
         int numberOfUpdatedRows = certificateDao.updatePatch(certificate);
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw new ResourceValidationException();
+            throw ResourceValidationException.validationWithCertificateId(certificate.getId()).get();
         }
         return certificate;
     }
 
     @Override
-    public void delete(int id) throws ResourceValidationException {
+    public void delete(int id){
         certificateDao.deleteBondingTagsByCertificateId(id);
         int numberOfUpdatedRows = certificateDao.deleteCertificate(id);
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw new ResourceValidationException();
+            throw ResourceValidationException.validationWithCertificateId(id).get();
         }
     }
 

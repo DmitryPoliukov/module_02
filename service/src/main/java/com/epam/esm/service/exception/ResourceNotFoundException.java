@@ -1,22 +1,8 @@
 package com.epam.esm.service.exception;
 
-import java.util.function.Supplier;
+public class ResourceNotFoundException extends ResourceException {
 
-public class ResourceNotFoundException extends Exception {
-
-    public ResourceNotFoundException() {
-        super();
-    }
-
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
-
-    public ResourceNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ResourceNotFoundException(Throwable cause) {
-        super(cause);
+    public ResourceNotFoundException(String message, int resourceId) {
+        super(message, resourceId);
     }
 }
