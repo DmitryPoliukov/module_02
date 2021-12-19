@@ -10,6 +10,8 @@ import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public class TagServiceImpl implements TagService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override
     public void delete(int id) {
         certificateDao.deleteBondingTagsByTagId(id);

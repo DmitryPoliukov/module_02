@@ -11,6 +11,9 @@ import com.epam.esm.service.exception.ResourceValidationException;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +36,7 @@ public class CertificateServiceImpl implements CertificateService {
         this.tagDao = tagDao;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override
     public CertificateDto create(CertificateDto certificateDto) {
         LocalDateTime timeNow = now();
@@ -75,7 +79,7 @@ public class CertificateServiceImpl implements CertificateService {
         certificateDao.update(certificateDto.toEntity());
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override
     public void delete(int id){
         certificateDao.deleteBondingTagsByCertificateId(id);
