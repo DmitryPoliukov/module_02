@@ -1,7 +1,6 @@
 package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.entity.Certificate;
-import com.epam.esm.repository.entity.CertificatePatch;
 import com.epam.esm.repository.entity.Tag;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public interface CertificateDao {
      * @param certificate the certificate
      * @return the int
      */
-    int update(Certificate certificate);
+    void update(Certificate certificate);
 
     /**
      * Read certificate tags list.
@@ -93,10 +92,7 @@ public interface CertificateDao {
      * @param certificate the certificate
      * @return the int
      */
-    /*
-    int updatePatch(CertificatePatch certificate);
 
-     */
 
 
 

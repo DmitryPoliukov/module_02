@@ -1,9 +1,7 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.repository.dto.CertificateDto;
 import com.epam.esm.repository.entity.Certificate;
-import com.epam.esm.repository.entity.CertificatePatch;
-import com.epam.esm.repository.entity.CertificateRequestParameter;
-import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -27,40 +26,38 @@ public class CertificateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Certificate> readCertificate(@PathVariable int id) {
-        Certificate certificate = certificateService.read(id);
-
+    public ResponseEntity<CertificateDto> readCertificate(@PathVariable int id) {
+        CertificateDto certificate = certificateService.read(id);
         return ResponseEntity.status(HttpStatus.OK).body(certificate);
     }
 
     @GetMapping
-    public List<Certificate> readCertificates(CertificateRequestParameter parameter) {
-        return certificateService.readAll(parameter);
+    public List<CertificateDto> readCertificates() {
+        return certificateService.readAll();
+    }
+
+    @GetMapping("/search")
+    public List<CertificateDto> readCertificateWithParams(@RequestParam String tagName, @RequestParam String descriptionOrNamePart,
+                                                          @RequestParam String sortParameter, @RequestParam boolean ascending) {
+        List<CertificateDto> certificatesDto =  certificateService.readCertificateWithParams(tagName, descriptionOrNamePart, sortParameter, ascending);
+        return certificatesDto;
     }
 
     @PostMapping
-    public ResponseEntity<Certificate> createCertificate(
-            @Valid @RequestBody Certificate certificate) {
+    public ResponseEntity<CertificateDto> createCertificate(
+            @Valid @RequestBody CertificateDto certificateDto) {
 
-        Certificate createdCertificate = certificateService.create(certificate);
+        CertificateDto createdCertificate = certificateService.create(certificateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCertificate);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Certificate> updateCertificatePut(
-            @PathVariable int id, @Valid @RequestBody Certificate certificate) {
-        certificate.setId(id);
-        Certificate updatedCertificate = certificateService.updatePut(certificate);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedCertificate);
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> updateCertificate(@PathVariable int id,
+                                                        @RequestBody CertificateDto certificateDto) {
+        certificateService.update(id, certificateDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Success update");
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<CertificatePatch> updateCertificatePatch(
-            @PathVariable int id, @Valid @RequestBody CertificatePatch certificate) {
-        certificate.setId(id);
-        CertificatePatch updatedCertificate = certificateService.updatePatch(certificate);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedCertificate);
-    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

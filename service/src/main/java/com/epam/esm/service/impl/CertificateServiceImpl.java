@@ -5,7 +5,6 @@ import com.epam.esm.repository.dao.CertificateDao;
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.dto.CertificateDto;
 import com.epam.esm.repository.entity.Certificate;
-import com.epam.esm.repository.entity.CertificatePatch;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
@@ -14,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class CertificateServiceImpl implements CertificateService {
@@ -33,7 +35,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateDto create(CertificateDto certificateDto) {
-        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime timeNow = now();
         certificateDto.setCreateDate(timeNow);
         certificateDto.setLastUpdateDate(timeNow);
         Certificate createdCertificate = certificateDao.createCertificate(certificateDto.toEntity());
@@ -49,11 +51,9 @@ public class CertificateServiceImpl implements CertificateService {
         for (Certificate certificate : certificates) {
             certificate.setTags(certificateDao.readCertificateTags(certificate.getId()));
         }
-        List<CertificateDto> certificateDtoList = new ArrayList<>();
-        for (Certificate certificate :certificates ) {
-            certificateDtoList.add(certificate.toDto());
-        }
-        return certificateDtoList;
+        return certificates.stream()
+                .map(Certificate::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -65,31 +65,16 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public CertificateDto updatePut(CertificateDto certificateDto) {
-        LocalDateTime timeNow = LocalDateTime.now();
-        certificateDto.setCreateDate(timeNow);
-        certificateDto.setLastUpdateDate(timeNow);
-        int numberOfUpdatedRows = certificateDao.update(certificateDto.toEntity());
-        if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw ResourceValidationException.validationWithCertificateId(certificateDto.getId()).get();
-        }
-        certificateDao.deleteBondingTagsByCertificateId(certificateDto.getId());
-        addTagsToDb(certificateDto.toEntity());
-        return certificateDto;
-    }
-/*
-    @Override
-    public CertificatePatch updatePatch(CertificatePatch certificate) {
-        LocalDateTime timeNow = LocalDateTime.now();
-        certificate.setLastUpdateDate(timeNow);
-        int numberOfUpdatedRows = certificateDao.updatePatch(certificate);
-        if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw ResourceValidationException.validationWithCertificateId(certificate.getId()).get();
-        }
-        return certificate;
+    public void update(int id, CertificateDto certificateDto) {
+        certificateDto.setId(id);
+        //GiftCertificateValidator.validateForUpdate(giftCertificate);
+        certificateDto.setLastUpdateDate(LocalDateTime.now());
+        List<Tag> requestTags = certificateDto.getTags();
+        List<Tag> createdTags = tagDao.readAll();
+        saveNewTags(requestTags, createdTags);
+        certificateDao.update(certificateDto.toEntity());
     }
 
- */
 
     @Override
     public void delete(int id){
@@ -100,14 +85,50 @@ public class CertificateServiceImpl implements CertificateService {
         }
     }
 
+    @Override
+    public List<CertificateDto> readCertificateWithParams(String tagName, String descriptionOrNamePart,
+                                                          String sortParameter, boolean ascending) {
+        if (tagName.equals("null")) {
+            tagName = null;
+        }
+        if (descriptionOrNamePart.equals("null")) {
+            descriptionOrNamePart = null;
+        }
+        if (sortParameter.equals("null")) {
+            sortParameter = null;
+        }
+        List<Certificate> certificates = certificateDao.readCertificateWithParams(tagName, descriptionOrNamePart,
+                sortParameter, ascending);
+        return certificates.stream()
+                .map(Certificate::toDto)
+                .collect(Collectors.toList());
+    }
 
-    void addTagsToDb(Certificate certificate) {
+    private void addTagsToDb(Certificate certificate) {
         List<Tag> tags = certificate.getTags();
         if (tags != null) {
             for (Tag tag : tags) {
                 Optional<Tag> existedTag = tagDao.read(tag.getName());
                 int tagId = existedTag.map(Tag::getId).orElseGet(() -> tagDao.create(tag).getId());
                 certificateDao.addTag(tagId, certificate.getId());
+            }
+        }
+    }
+
+    private void saveNewTags(List<Tag> requestTags, List<Tag> createdTags) {
+        if (requestTags == null) {
+            return;
+        }
+        for (Tag requestTag : requestTags) {
+            boolean isExist = false;
+            for (Tag createdTag : createdTags) {
+                if (Objects.equals(requestTag.getName(), createdTag.getName())) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                tagDao.create(requestTag);
             }
         }
     }
