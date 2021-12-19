@@ -15,7 +15,7 @@ public interface TagService {
      * @param tag the tag
      * @return the tag
      */
-    Tag create(TagDto tag);
+    TagDto create(TagDto tag);
 
     /**
      * Read tag.

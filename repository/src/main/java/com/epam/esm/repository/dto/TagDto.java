@@ -11,11 +11,6 @@ public class TagDto {
     @Size(min=1,max = 45)
     private String name;
 
-    public TagDto(Tag entityTag) {
-        this.id = entityTag.getId();
-        this.name = entityTag.getName();
-    }
-
     public Tag toEntity() {
         Tag entityTag = new Tag();
         entityTag.setId(this.id);

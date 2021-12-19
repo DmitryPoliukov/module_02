@@ -5,16 +5,16 @@ import com.epam.esm.repository.dao.CertificateDao;
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.dto.TagDto;
 import com.epam.esm.repository.entity.Tag;
-import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -31,9 +31,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag create(TagDto inputTag) {
+    public TagDto create(TagDto inputTag) {
         Optional<Tag> existingTag = tagDao.read(inputTag.getName());
-        return existingTag.orElseGet(() -> tagDao.create(inputTag.toEntity()));
+        return existingTag.orElseGet(() -> tagDao.create(inputTag.toEntity())).toDto();
     }
 
     @Override
@@ -46,11 +46,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDto> readAll() {
         List<Tag> entityList = tagDao.readAll();
-        List<TagDto> dtoList = new ArrayList<>();
-        for (Tag tag : entityList) {
-           dtoList.add(tag.toDto());
-        }
-        return dtoList;
+        return entityList.stream()
+                .map(Tag::toDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
