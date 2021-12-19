@@ -2,7 +2,6 @@ package com.epam.esm.repository.dao;
 
 import com.epam.esm.repository.entity.Certificate;
 import com.epam.esm.repository.entity.CertificatePatch;
-import com.epam.esm.repository.entity.CertificateRequestParameter;
 import com.epam.esm.repository.entity.Tag;
 
 import java.util.List;
@@ -26,13 +25,12 @@ public interface CertificateDao {
      */
     Optional<Certificate> read(int certificateId);
 
-    /**
-     * Read all list.
-     *
-     * @param parameter the requests parameters for certificate
-     * @return the list
-     */
-    List<Certificate> readAll(CertificateRequestParameter parameter);
+
+    List<Certificate> readAll();
+
+
+    List<Certificate> readCertificateWithParams(String tagName, String descriptionOrNamePart,
+                                                String sortParameters, boolean ascending);
 
     /**
      * Update int.
@@ -95,7 +93,11 @@ public interface CertificateDao {
      * @param certificate the certificate
      * @return the int
      */
+    /*
     int updatePatch(CertificatePatch certificate);
+
+     */
+
 
 
 

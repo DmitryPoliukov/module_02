@@ -1,9 +1,8 @@
 package com.epam.esm.service;
 
 
-import com.epam.esm.repository.entity.Certificate;
+import com.epam.esm.repository.dto.CertificateDto;
 import com.epam.esm.repository.entity.CertificatePatch;
-import com.epam.esm.repository.entity.CertificateRequestParameter;
 
 import java.util.List;
 
@@ -15,15 +14,14 @@ public interface CertificateService {
      * @param certificate the certificate
      * @return the certificate
      */
-    Certificate create(Certificate certificate);
+    CertificateDto create(CertificateDto certificate);
 
     /**
      * Read all list.
      *
-     * @param parameter the parameter
      * @return the list
      */
-    List<Certificate> readAll(CertificateRequestParameter parameter);
+    List<CertificateDto> readAll();
 
     /**
      * Read certificate.
@@ -31,7 +29,7 @@ public interface CertificateService {
      * @param id the id
      * @return the certificate
      */
-    Certificate read(int id);
+    CertificateDto read(int id);
 
     /**
      * Update put certificate.
@@ -39,15 +37,11 @@ public interface CertificateService {
      * @param certificate the certificate
      * @return the certificate
      */
-    Certificate updatePut(Certificate certificate);
+    CertificateDto updatePut(CertificateDto certificate);
 
-    /**
-     * Update patch certificate.
-     *
-     * @param certificate
-     * @return
-     */
-    CertificatePatch updatePatch(CertificatePatch certificate);
+
+
+
 
     /**
      * Delete certificate.

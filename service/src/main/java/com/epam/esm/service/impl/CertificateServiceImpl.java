@@ -3,9 +3,9 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.repository.dao.CertificateDao;
 import com.epam.esm.repository.dao.TagDao;
+import com.epam.esm.repository.dto.CertificateDto;
 import com.epam.esm.repository.entity.Certificate;
 import com.epam.esm.repository.entity.CertificatePatch;
-import com.epam.esm.repository.entity.CertificateRequestParameter;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,48 +32,52 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public Certificate create(Certificate certificate) {
+    public CertificateDto create(CertificateDto certificateDto) {
         LocalDateTime timeNow = LocalDateTime.now();
-        certificate.setCreateDate(timeNow);
-        certificate.setLastUpdateDate(timeNow);
-        Certificate createdCertificate = certificateDao.createCertificate(certificate);
-        createdCertificate.setTags(certificate.getTags());
+        certificateDto.setCreateDate(timeNow);
+        certificateDto.setLastUpdateDate(timeNow);
+        Certificate createdCertificate = certificateDao.createCertificate(certificateDto.toEntity());
+        createdCertificate.setTags(certificateDto.getTags());
         addTagsToDb(createdCertificate);
-        return createdCertificate;
+        return createdCertificate.toDto();
     }
 
 
     @Override
-    public List<Certificate> readAll(CertificateRequestParameter parameter) {
-        List<Certificate> certificates = certificateDao.readAll(parameter);
+    public List<CertificateDto> readAll() {
+        List<Certificate> certificates = certificateDao.readAll();
         for (Certificate certificate : certificates) {
             certificate.setTags(certificateDao.readCertificateTags(certificate.getId()));
         }
-        return certificates;
+        List<CertificateDto> certificateDtoList = new ArrayList<>();
+        for (Certificate certificate :certificates ) {
+            certificateDtoList.add(certificate.toDto());
+        }
+        return certificateDtoList;
     }
 
     @Override
-    public Certificate read(int id) {
+    public CertificateDto read(int id) {
         Optional<Certificate> certificate = certificateDao.read(id);
         certificate.ifPresent(
                 actualCertificate -> actualCertificate.setTags(certificateDao.readCertificateTags(id)));
-        return certificate.orElseThrow(ResourceNotFoundException.notFoundWithCertificateId(id));
+        return certificate.orElseThrow(ResourceNotFoundException.notFoundWithCertificateId(id)).toDto();
     }
 
     @Override
-    public Certificate updatePut(Certificate certificate) {
+    public CertificateDto updatePut(CertificateDto certificateDto) {
         LocalDateTime timeNow = LocalDateTime.now();
-        certificate.setCreateDate(timeNow);
-        certificate.setLastUpdateDate(timeNow);
-        int numberOfUpdatedRows = certificateDao.update(certificate);
+        certificateDto.setCreateDate(timeNow);
+        certificateDto.setLastUpdateDate(timeNow);
+        int numberOfUpdatedRows = certificateDao.update(certificateDto.toEntity());
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw ResourceValidationException.validationWithCertificateId(certificate.getId()).get();
+            throw ResourceValidationException.validationWithCertificateId(certificateDto.getId()).get();
         }
-        certificateDao.deleteBondingTagsByCertificateId(certificate.getId());
-        addTagsToDb(certificate);
-        return certificate;
+        certificateDao.deleteBondingTagsByCertificateId(certificateDto.getId());
+        addTagsToDb(certificateDto.toEntity());
+        return certificateDto;
     }
-
+/*
     @Override
     public CertificatePatch updatePatch(CertificatePatch certificate) {
         LocalDateTime timeNow = LocalDateTime.now();
@@ -83,6 +88,8 @@ public class CertificateServiceImpl implements CertificateService {
         }
         return certificate;
     }
+
+ */
 
     @Override
     public void delete(int id){

@@ -1,5 +1,7 @@
 package com.epam.esm.repository.entity;
 
+import com.epam.esm.repository.dto.CertificateDto;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,6 +55,19 @@ public class Certificate {
     public Certificate(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public CertificateDto toDto() {
+        CertificateDto certificateDto = new CertificateDto();
+        certificateDto.setId(this.id);
+        certificateDto.setName(this.name);
+        certificateDto.setDescription(this.description);
+        certificateDto.setPrice(this.price);
+        certificateDto.setDuration(this.duration);
+        certificateDto.setCreateDate(this.createDate);
+        certificateDto.setLastUpdateDate(this.lastUpdateDate);
+        certificateDto.setTags(this.tags);
+        return certificateDto;
     }
 
     public void setPrice(Double price) {
