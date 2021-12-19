@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 
+import com.epam.esm.repository.dto.TagDto;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 
@@ -14,7 +15,7 @@ public interface TagService {
      * @param tag the tag
      * @return the tag
      */
-    Tag create(Tag tag);
+    Tag create(TagDto tag);
 
     /**
      * Read tag.
@@ -22,14 +23,14 @@ public interface TagService {
      * @param id the id
      * @return the tag
      */
-    Tag read(int id) throws ResourceNotFoundException;
+    TagDto read(int id);
 
     /**
      * Read all list.
      *
      * @return the list
      */
-    List<Tag> readAll();
+    List<TagDto> readAll();
 
     /**
      * Delete.

@@ -4,14 +4,20 @@ import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.entity.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -50,6 +56,8 @@ class TagDaoImplTest {
 
  */
 
+
+/*
     @Test
     void readAll() {
 
@@ -62,8 +70,10 @@ class TagDaoImplTest {
         assertEquals(expectedList, actualList);
     }
 
+ */
 
-/*
+
+
     @ParameterizedTest
     @MethodSource("readTagByNameDataProvider")
     void readTest(Tag wantedTag, Optional<Tag> expectedTag) {
@@ -79,8 +89,8 @@ class TagDaoImplTest {
                 arguments(givenNewTagWithoutId(), Optional.empty()));
     }
 
- */
 
+/*
     @Test
     void delete() {
         Tag tag1 = tagDao.read(1).get();
@@ -90,6 +100,8 @@ class TagDaoImplTest {
         assertTrue(tagDao.read(tag1.getId()).isEmpty());
         tagDao.create(tag1);
     }
+
+ */
 
     private static Tag givenNewTagWithoutId() {
         return new Tag("third tag");

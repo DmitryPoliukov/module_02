@@ -1,5 +1,7 @@
 package com.epam.esm.repository.entity;
 
+import com.epam.esm.repository.dto.TagDto;
+
 import javax.validation.constraints.Size;
 
 public class Tag {
@@ -34,6 +36,13 @@ public class Tag {
 
     public Tag(@Size(min = 1, max = 45) String name) {
         this.name = name;
+    }
+
+    public TagDto toDto() {
+        TagDto tagDto = new TagDto();
+        tagDto.setId(this.id);
+        tagDto.setName(this.name);
+        return tagDto;
     }
 
     @Override

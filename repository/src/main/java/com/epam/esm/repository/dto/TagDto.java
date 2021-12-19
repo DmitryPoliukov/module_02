@@ -10,7 +10,7 @@ public class TagDto {
 
     @Size(min=1,max = 45)
     private String name;
-/*
+
     public TagDto(Tag entityTag) {
         this.id = entityTag.getId();
         this.name = entityTag.getName();
@@ -23,6 +23,22 @@ public class TagDto {
         return entityTag;
     }
 
- */
+    public TagDto() {
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
