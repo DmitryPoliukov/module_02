@@ -60,7 +60,7 @@ public class CertificateDaoImpl implements CertificateDao {
             "DELETE FROM gift_certificate_m2m_tag WHERE gift_certificate_id = ?";
 
     @Override
-    public Certificate createCertificate(Certificate certificate) {
+    public Certificate create(Certificate certificate) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {

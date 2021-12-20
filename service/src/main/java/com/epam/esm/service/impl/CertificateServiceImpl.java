@@ -42,7 +42,7 @@ public class CertificateServiceImpl implements CertificateService {
         LocalDateTime timeNow = now();
         certificateDto.setCreateDate(timeNow);
         certificateDto.setLastUpdateDate(timeNow);
-        Certificate createdCertificate = certificateDao.createCertificate(certificateDto.toEntity());
+        Certificate createdCertificate = certificateDao.create(certificateDto.toEntity());
         createdCertificate.setTags(certificateDto.getTags());
         addTagsToDb(createdCertificate);
         return createdCertificate.toDto();

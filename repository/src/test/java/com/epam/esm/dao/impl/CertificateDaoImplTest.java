@@ -44,8 +44,8 @@ class CertificateDaoImplTest {
         Certificate certificate2 = givenExistingCertificate2();
         Tag tag1 = givenExistingTag1();
         Tag tag2 = givenExistingTag2();
-        certificateDao.createCertificate(certificate1);
-        certificateDao.createCertificate(certificate2);
+        certificateDao.create(certificate1);
+        certificateDao.create(certificate2);
         tagDao.create(tag1);
         tagDao.create(tag2);
         certificateDao.addTag(tag1.getId(), certificate2.getId());
@@ -56,7 +56,7 @@ class CertificateDaoImplTest {
     void create() {
         Certificate expectedCertificate = givenNewCertificateWithoutId();
 
-        Certificate actualCertificate = certificateDao.createCertificate(expectedCertificate);
+        Certificate actualCertificate = certificateDao.create(expectedCertificate);
 
         expectedCertificate.setId(ID_FOR_3_CERTIFICATE);
         assertEquals(expectedCertificate, actualCertificate);

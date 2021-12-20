@@ -14,7 +14,7 @@ public interface CertificateDao {
      * @param certificate the certificate
      * @return the certificate
      */
-    Certificate createCertificate(Certificate certificate);
+    Certificate create(Certificate certificate);
 
     /**
      * Read optional.
