@@ -71,12 +71,36 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public void update(int id, CertificateDto certificateDto) {
         certificateDto.setId(id);
-        //GiftCertificateValidator.validateForUpdate(giftCertificate);
-        certificateDto.setLastUpdateDate(LocalDateTime.now());
-        List<Tag> requestTags = certificateDto.getTags();
+        CertificateDto actualCertificateDto = fillingFields(certificateDto);
+        actualCertificateDto.setLastUpdateDate(LocalDateTime.now());
+        List<Tag> requestTags = actualCertificateDto.getTags();
         List<Tag> createdTags = tagDao.readAll();
         saveNewTags(requestTags, createdTags);
         certificateDao.update(certificateDto.toEntity());
+    }
+
+    private CertificateDto fillingFields(CertificateDto certificateDto) {
+        CertificateDto oldCertificate = certificateDao.read(certificateDto.getId()).get().toDto();
+        if (certificateDto.getName() == null) {
+            certificateDto.setName(oldCertificate.getName());
+        }
+        if (certificateDto.getDescription() == null) {
+            certificateDto.setDescription(oldCertificate.getDescription());
+        }
+        if (certificateDto.getDuration() == null) {
+            certificateDto.setDuration(oldCertificate.getDuration());
+        }
+        if (certificateDto.getPrice() == null) {
+            certificateDto.setPrice(oldCertificate.getPrice());
+        }
+        if (certificateDto.getTags() == null) {
+            certificateDto.setTags(oldCertificate.getTags());
+        }
+        if (certificateDto.getCreateDate() == null) {
+            certificateDto.setCreateDate((oldCertificate.getCreateDate()));
+        }
+        return certificateDto;
+
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)

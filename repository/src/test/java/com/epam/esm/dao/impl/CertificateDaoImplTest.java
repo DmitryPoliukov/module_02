@@ -154,20 +154,6 @@ class CertificateDaoImplTest {
         assertEquals(expectedTags, actualTags);
     }
 
-    @Test
-    void updatePatch() {
-        Certificate expectedCertificate = givenExistingCertificate1();
-        expectedCertificate.setName("new name");
-        Certificate updateCertificate = new Certificate();
-        updateCertificate.setId(1);
-        updateCertificate.setName("new name");
-
-        certificateDao.update(updateCertificate);
-
-        Certificate actualCertificate = certificateDao.read(expectedCertificate.getId()).get();
-        assertEquals(expectedCertificate, actualCertificate);
-    }
-
     private static Certificate givenExistingCertificate1() {
         return new Certificate(1, "first certificate", "first description", 1.33, 5,
                 LocalDateTime.of(2020, 12, 25, 15, 0, 0),

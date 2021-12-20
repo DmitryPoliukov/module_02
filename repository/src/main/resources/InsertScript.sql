@@ -8,7 +8,7 @@ values (1, 'tag1'),
        (3, 'tag3'),
        (4, 'tag4');
 
-insert into gift_certificate_m2m_tag (certificate_id, tag_id)
+insert into gift_certificate_m2m_tag (gift_certificate_id, tag_id)
 values (1, 1),
        (1, 2),
        (1, 3),
