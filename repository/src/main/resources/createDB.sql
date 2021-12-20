@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `db02r`.`gift_certificate` (
                                                           `description` VARCHAR(45) NOT NULL,
                                                           `price` DOUBLE NOT NULL,
                                                           `duration` INT NOT NULL,
-                                                          `create_table` TIMESTAMP(6) NULL,
+                                                          `create_date` TIMESTAMP(6) NULL,
                                                           `last_update_date` TIMESTAMP(6) NULL,
                                                           PRIMARY KEY (`id`))
     ENGINE = InnoDB;

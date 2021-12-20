@@ -3,13 +3,15 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.repository.dao.CertificateDao;
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.entity.Certificate;
-import com.epam.esm.repository.entity.CertificatePatch;
-import com.epam.esm.repository.entity.CertificateRequestParameter;
 import com.epam.esm.repository.entity.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -17,10 +19,13 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { TestConfig.class })
 class CertificateDaoImplTest {
@@ -48,7 +53,7 @@ class CertificateDaoImplTest {
     }
 
     @Test
-    void createCertificate() {
+    void create() {
         Certificate expectedCertificate = givenNewCertificateWithoutId();
 
         Certificate actualCertificate = certificateDao.createCertificate(expectedCertificate);
@@ -57,8 +62,17 @@ class CertificateDaoImplTest {
         assertEquals(expectedCertificate, actualCertificate);
     }
 
-    @Test
-    void read() {
+    @ParameterizedTest
+    @MethodSource("readDataProvider")
+    void read(int actualId, Optional<Certificate> expectedCertificate) {
+        Optional<Certificate> actualCertificate = certificateDao.read(actualId);
+        assertEquals(expectedCertificate, actualCertificate);
+    }
+
+    static Stream<Arguments> readDataProvider() {
+        return Stream.of(
+                arguments(givenExistingCertificate1().getId(), Optional.of(givenExistingCertificate1())),
+                arguments(NOT_EXISTED_CERTIFICATE_ID, Optional.empty()));
     }
 
     @Test
@@ -67,22 +81,22 @@ class CertificateDaoImplTest {
         Certificate certificate2 = givenExistingCertificate2();
         List<Certificate> expectedList = List.of(certificate1, certificate2);
 
-        List<Certificate> actualList = certificateDao.readAll(new CertificateRequestParameter());
+        List<Certificate> actualList = certificateDao.readAll();
         assertEquals(expectedList, actualList);
     }
 
     @Test
-    void update() {
-        Certificate expectedCertificate = new Certificate(1, "new name");
+    void delete() {
+        Certificate certificate = givenExistingCertificate1();
 
-        certificateDao.update(expectedCertificate);
+        certificateDao.deleteCertificate(certificate.getId());
 
-        Certificate actualCertificate = certificateDao.read(expectedCertificate.getId()).get();
-        assertEquals(expectedCertificate, actualCertificate);
+        Optional<Certificate> actualCertificate = certificateDao.read(certificate.getId());
+        assertTrue(actualCertificate.isEmpty());
     }
 
     @Test
-    void readCertificateTags() {
+    void readTags() {
         Certificate certificate = givenExistingCertificate2();
         Tag tag1 = givenExistingTag1();
         Tag tag2 = givenExistingTag2();
@@ -118,17 +132,7 @@ class CertificateDaoImplTest {
     }
 
     @Test
-    void deleteCertificate() {
-        Certificate certificate = givenExistingCertificate1();
-
-        certificateDao.deleteCertificate(certificate.getId());
-
-        Optional<Certificate> actualCertificate = certificateDao.read(certificate.getId());
-        assertTrue(actualCertificate.isEmpty());
-    }
-
-    @Test
-    void deleteBondingTagsByTagId() {
+    void deleteCertificateTagsByTagId() {
         Certificate certificate = givenExistingCertificate2();
         Tag tag = givenExistingTag1();
         List<Tag> expectedTags = List.of(tag);
@@ -140,7 +144,7 @@ class CertificateDaoImplTest {
     }
 
     @Test
-    void deleteBondingTagsByCertificateId() {
+    void deleteCertificateTagsByCertificateId() {
         Certificate certificate = givenExistingCertificate2();
         List<Tag> expectedTags = Collections.emptyList();
 
@@ -154,11 +158,11 @@ class CertificateDaoImplTest {
     void updatePatch() {
         Certificate expectedCertificate = givenExistingCertificate1();
         expectedCertificate.setName("new name");
-        CertificatePatch updateCertificate = new CertificatePatch();
+        Certificate updateCertificate = new Certificate();
         updateCertificate.setId(1);
         updateCertificate.setName("new name");
 
-        certificateDao.updatePatch(updateCertificate);
+        certificateDao.update(updateCertificate);
 
         Certificate actualCertificate = certificateDao.read(expectedCertificate.getId()).get();
         assertEquals(expectedCertificate, actualCertificate);
@@ -189,4 +193,5 @@ class CertificateDaoImplTest {
     private static Tag givenExistingTag2() {
         return new Tag(2, "second tag");
     }
+
 }

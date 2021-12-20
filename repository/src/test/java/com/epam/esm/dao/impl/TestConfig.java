@@ -20,7 +20,6 @@ public class TestConfig {
                 .setName("dmitryDB")
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("createCertificatesDB.sql")
-                .addScript("insertData.sql")
                 .build();
         return db;
     }
