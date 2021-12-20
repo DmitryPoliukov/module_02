@@ -24,7 +24,11 @@ public interface CertificateDao {
      */
     Optional<Certificate> read(int certificateId);
 
-
+    /**
+     * Readl all certificates
+     *
+     * @return list of certificates
+     */
     List<Certificate> readAll();
 
 

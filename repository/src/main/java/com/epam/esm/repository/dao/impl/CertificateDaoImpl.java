@@ -2,13 +2,11 @@ package com.epam.esm.repository.dao.impl;
 
 import com.epam.esm.repository.dao.AbstractCRDRepository;
 import com.epam.esm.repository.dao.CertificateDao;
-
-import com.epam.esm.repository.entity.*;
+import com.epam.esm.repository.entity.Certificate;
+import com.epam.esm.repository.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,9 +14,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

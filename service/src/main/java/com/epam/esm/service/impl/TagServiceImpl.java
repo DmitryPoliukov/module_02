@@ -6,8 +6,7 @@ import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.dto.TagDto;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.ResourceValidationException;
+import com.epam.esm.service.exception.ResourceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -42,7 +41,7 @@ public class TagServiceImpl implements TagService {
     public TagDto read(int id) {
         Optional<Tag> tag = tagDao.read(id);
 
-        return tag.orElseThrow(ResourceNotFoundException.notFoundWithTagId(id)).toDto();
+        return tag.orElseThrow(ResourceException.notFoundWithTagId(id)).toDto();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class TagServiceImpl implements TagService {
         certificateDao.deleteBondingTagsByTagId(id);
         int numberOfUpdatedRows = tagDao.delete(id);
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
-            throw ResourceValidationException.validationWithTagId(id).get();
+            throw ResourceException.validationWithTagId(id).get();
         }
 
     }
