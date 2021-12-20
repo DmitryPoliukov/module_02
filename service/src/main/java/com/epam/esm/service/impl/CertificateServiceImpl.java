@@ -1,6 +1,5 @@
 package com.epam.esm.service.impl;
 
-
 import com.epam.esm.repository.dao.CertificateDao;
 import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.dto.CertificateDto;

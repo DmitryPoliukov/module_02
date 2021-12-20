@@ -92,7 +92,11 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
     @Override
     public List<Certificate> readCertificateWithParams(String tagName, String descriptionOrNamePart, String sortParameter, boolean ascending) {
         SimpleJdbcCall simpleCall = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("findProcedure")
+                .withProcedureName("findProcedure");
+
+
+
+     /*
                 .declareParameters(
                         new SqlParameter("1", Types.VARCHAR))
                 .returningResultSet("mapObjRefrence", new RowMapper<Certificate>() {
@@ -120,10 +124,10 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
 
         List<Certificate> certificates = (List<Certificate>) out.get("mapObjRefrence");
 
+*/
 
 
 
-        /*
         Map<String, Object> out = simpleCall.execute(
                 new MapSqlParameterSource()
                         .addValue("tagName", tagName)
@@ -132,7 +136,7 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
                         .addValue("ascending", ascending));
         List<Object> list = (List) out.get("#result-set-1");
 
-
+/*
         List<Certificate> certificates = new ArrayList<>();
         for (Object object: list) {
             Map<String, Object> map = (Map<String, Object>) object;
@@ -155,7 +159,7 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
         }
 
          */
-        return certificates;
+        return null;
     }
 
     @Override
