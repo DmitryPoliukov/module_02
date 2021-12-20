@@ -70,7 +70,7 @@ public interface CertificateDao {
      * @param certificateId the certificate id
      * @return the int
      */
-    int deleteCertificate(int certificateId);
+    int delete(int certificateId);
 
     /**
      * Delete certificate tags by tag id.

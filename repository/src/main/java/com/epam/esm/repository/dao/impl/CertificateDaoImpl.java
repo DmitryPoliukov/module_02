@@ -1,5 +1,6 @@
 package com.epam.esm.repository.dao.impl;
 
+import com.epam.esm.repository.dao.AbstractCRDRepository;
 import com.epam.esm.repository.dao.CertificateDao;
 
 import com.epam.esm.repository.entity.*;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class CertificateDaoImpl implements CertificateDao {
+public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository<Certificate> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -188,7 +189,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public int deleteCertificate(int certificateId) {
+    public int delete(int certificateId) {
         return jdbcTemplate.update(SQL_DELETE_CERTIFICATE, certificateId);
     }
 

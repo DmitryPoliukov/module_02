@@ -107,7 +107,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public void delete(int id){
         certificateDao.deleteBondingTagsByCertificateId(id);
-        int numberOfUpdatedRows = certificateDao.deleteCertificate(id);
+        int numberOfUpdatedRows = certificateDao.delete(id);
         if (numberOfUpdatedRows != ONE_UPDATED_ROW) {
             throw ResourceValidationException.validationWithCertificateId(id).get();
         }

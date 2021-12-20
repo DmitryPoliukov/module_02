@@ -89,7 +89,7 @@ class CertificateDaoImplTest {
     void delete() {
         Certificate certificate = givenExistingCertificate1();
 
-        certificateDao.deleteCertificate(certificate.getId());
+        certificateDao.delete(certificate.getId());
 
         Optional<Certificate> actualCertificate = certificateDao.read(certificate.getId());
         assertTrue(actualCertificate.isEmpty());

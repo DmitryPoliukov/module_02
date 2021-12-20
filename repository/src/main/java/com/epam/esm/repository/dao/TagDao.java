@@ -27,7 +27,7 @@ public interface TagDao {
      * Read all list.
      *
      * @return the list
-   */
+     */
     List<Tag> readAll();
 
     /**
@@ -45,8 +45,6 @@ public interface TagDao {
      * @return the optional
      */
     Optional<Tag> read(String name);
-
-
 
 
 }
