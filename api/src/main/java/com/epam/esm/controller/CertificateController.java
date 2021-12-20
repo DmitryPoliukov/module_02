@@ -37,10 +37,10 @@ public class CertificateController {
     }
 
     @GetMapping("/search")
-    public List<CertificateDto> readCertificateWithParams(@RequestParam String tagName, @RequestParam String descriptionOrNamePart,
-                                                          @RequestParam String sortParameter, @RequestParam boolean ascending) {
-        List<CertificateDto> certificatesDto =  certificateService.readCertificateWithParams(tagName, descriptionOrNamePart, sortParameter, ascending);
-        return certificatesDto;
+    public List<CertificateDto> readCertificateWithParams(@RequestParam(required = false) String tagName, @RequestParam(required = false) String descriptionOrNamePart,
+                                                          @RequestParam(required = false) String sortParameter, @RequestParam(required = false) boolean ascending) {
+        return certificateService.readCertificateWithParams(tagName, descriptionOrNamePart, sortParameter, ascending);
+
     }
 
     @PostMapping
@@ -55,7 +55,7 @@ public class CertificateController {
     public ResponseEntity<String> updateCertificate(@PathVariable int id,
                                                         @RequestBody CertificateDto certificateDto) {
         certificateService.update(id, certificateDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Success update");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

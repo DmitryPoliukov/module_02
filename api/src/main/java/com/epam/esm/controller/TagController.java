@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.repository.dto.TagDto;
-import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,27 +23,22 @@ public class TagController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tag> readTag(@PathVariable int id) {
-        Tag tag = tagService.read(id).toEntity();
+    public ResponseEntity<TagDto> readTag(@PathVariable int id) {
+        TagDto tag = tagService.read(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(tag);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Tag> readTags() {
-        List<Tag> tagList = new ArrayList<>();
-        List<TagDto> tagDtoList = tagService.readAll();
-        for (TagDto tagDto : tagDtoList) {
-            tagList.add(tagDto.toEntity());
-        }
-        return tagList;
+    public List<TagDto> readTags() {
+        return tagService.readAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tag createTag(@RequestBody @Valid TagDto tagDto) {
-        return tagService.create(tagDto).toEntity();
+    public TagDto createTag(@RequestBody @Valid TagDto tagDto) {
+        return tagService.create(tagDto);
     }
 
     @DeleteMapping("/{id}")
