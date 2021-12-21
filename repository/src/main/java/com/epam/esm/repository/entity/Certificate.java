@@ -40,6 +40,28 @@ public class Certificate {
         this.lastUpdateDate = lastUpdateDate;
     }
 
+    public Certificate(Integer id, Integer duration, List<Tag> tags) {
+        this.id = id;
+        this.duration = duration;
+        this.tags = tags;
+    }
+
+    public Certificate(Integer id, Integer duration) {
+        this.id = id;
+        this.duration = duration;
+    }
+
+    public Certificate(Integer id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
     public CertificateDto toDto() {
         CertificateDto certificateDto = new CertificateDto();
         certificateDto.setId(this.id);

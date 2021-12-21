@@ -14,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -33,12 +34,12 @@ class TagDaoImplTest {
     @Autowired
     TagDao tagDao;
 
+    @Autowired
+    DataSource dataSource;
+
     @BeforeEach
     void setUp() {
-        Tag tag1 = givenExistingTag1();
-        Tag tag2 = givenExistingTag2();
-        tagDao.create(tag1);
-        tagDao.create(tag2);
+
     }
 
     @Test

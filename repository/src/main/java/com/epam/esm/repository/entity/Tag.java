@@ -39,6 +39,10 @@ public class Tag {
         this.name = name;
     }
 
+    public Tag(int id) {
+        this.id = id;
+    }
+
     public TagDto toDto() {
         TagDto tagDto = new TagDto();
         tagDto.setId(this.id);

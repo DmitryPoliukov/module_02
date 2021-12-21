@@ -6,7 +6,6 @@ import com.epam.esm.repository.dto.CertificateDto;
 import com.epam.esm.repository.entity.Certificate;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.CertificateService;
-import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.ResourceException;
 import com.epam.esm.service.validation.CertificateDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +127,7 @@ public class CertificateServiceImpl implements CertificateService {
                 .collect(Collectors.toList());
     }
 
-    private void addTagsToDb(Certificate certificate) {
+    public void addTagsToDb(Certificate certificate) {
         List<Tag> tags = certificate.getTags();
         if (tags != null) {
             for (Tag tag : tags) {
