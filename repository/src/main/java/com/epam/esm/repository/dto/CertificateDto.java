@@ -12,16 +12,16 @@ public class CertificateDto {
 
     private Integer id;
 
-    @Size(min = 1,max = 45)
+    @Size(min = 1,max = 45, message = "Certificate name length should be from 1 to 45")
     private String name;
 
-    @Size(min = 1,max = 45)
+    @Size(min = 1,max = 45, message = "Certificate description length should be from 1 to 45")
     private String description;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Certificate price should positive or zero")
     private Double price;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Certificate duration should positive or zero")
     private Integer duration;
 
     private LocalDateTime createDate;

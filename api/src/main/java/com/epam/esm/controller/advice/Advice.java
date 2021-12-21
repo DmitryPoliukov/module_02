@@ -5,6 +5,7 @@ import com.epam.esm.repository.entity.ErrorResponse;
 import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,4 +73,11 @@ public class Advice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String errorCode = String.format("%s%d", BAD_REQUEST.value(), 0);
+        ErrorResponse errorResponse =
+                new ErrorResponse(ex.getMessage(), errorCode);
+        return new ResponseEntity<>(errorResponse, BAD_REQUEST);
+    }
 }

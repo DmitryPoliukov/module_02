@@ -8,7 +8,7 @@ public class TagDto {
 
     private int id;
 
-    @Size(min=1,max = 45)
+    @Size(min=1,max = 45, message = "Tag name length should be from 1 to 45")
     private String name;
 
     public Tag toEntity() {
