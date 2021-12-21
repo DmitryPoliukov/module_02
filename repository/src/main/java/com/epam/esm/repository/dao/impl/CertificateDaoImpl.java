@@ -7,6 +7,7 @@ import com.epam.esm.repository.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -74,6 +76,20 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
         certificate.setId(keyHolder.getKey().intValue());
         return certificate;
     }
+    private static final RowMapper<Certificate> CERTIFICATE_ROW_MAPPER =
+            (rs, rowNum) -> {
+                Certificate certificate = new Certificate();
+                certificate.setId(rs.getInt(1));
+                certificate.setName(rs.getString(2));
+                certificate.setDescription(rs.getString(3));
+                Double price = rs.getDouble(4);
+                certificate.setPrice(price);
+                Integer duration = rs.getInt(5);
+                certificate.setDuration(duration);
+                certificate.setCreateDate(rs.getObject(6, LocalDateTime.class));
+                certificate.setLastUpdateDate(rs.getObject(7, LocalDateTime.class));
+                return certificate;
+            };
 
     @Override
     public Optional<Certificate> read(int certificateId) {
@@ -88,75 +104,19 @@ public class CertificateDaoImpl implements CertificateDao, AbstractCRDRepository
 
     @Override
     public List<Certificate> readCertificateWithParams(String tagName, String descriptionOrNamePart, String sortParameter, boolean ascending) {
+        jdbcTemplate.setResultsMapCaseInsensitive(true);
         SimpleJdbcCall simpleCall = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("findProcedure");
-
-
-
-     /*
-                .declareParameters(
-                        new SqlParameter("1", Types.VARCHAR))
-                .returningResultSet("mapObjRefrence", new RowMapper<Certificate>() {
-
-                    @Override
-                    public Certificate mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        Certificate pojo = new Certificate();
-
-                        pojo.setId(rs.getInt("col_1"));
-                        pojo.setName(rs.getString("col_2"));
-                        pojo.setDescription(rs.getString("col_3"));
-                        pojo.setPrice(rs.getDouble("col_4"));
-                        pojo.setDuration(rs.getInt("col_5"));
-                        pojo.setCreateDate(LocalDateTime.parse(rs.getString("col_6"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                        pojo.setCreateDate(LocalDateTime.parse(rs.getString("col_7"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));                        return pojo;
-                    }
-                });
-
-        Map<String, Object> out = simpleCall.execute(
+                .withProcedureName("findProcedure")
+                .returningResultSet("certificates",
+                CERTIFICATE_ROW_MAPPER);
+        Map out = simpleCall.execute(
                 new MapSqlParameterSource()
                         .addValue("tagName", tagName)
                         .addValue("queryPart", descriptionOrNamePart)
                         .addValue("sortBy", sortParameter)
                         .addValue("ascending", ascending));
-
-        List<Certificate> certificates = (List<Certificate>) out.get("mapObjRefrence");
-
-*/
-
-
-
-        Map<String, Object> out = simpleCall.execute(
-                new MapSqlParameterSource()
-                        .addValue("tagName", tagName)
-                        .addValue("queryPart", descriptionOrNamePart)
-                        .addValue("sortBy", sortParameter)
-                        .addValue("ascending", ascending));
-        List<Object> list = (List) out.get("#result-set-1");
-
-/*
-        List<Certificate> certificates = new ArrayList<>();
-        for (Object object: list) {
-            Map<String, Object> map = (Map<String, Object>) object;
-            Certificate certificate = new Certificate();
-            Map<String, Integer> idMap = (Map<String, Integer>) map.get("id");
-            certificate.setId(idMap.get("id"));
-            Map<String, String> nameMap = (Map<String, String>) map.get("name");
-            certificate.setName(nameMap.get("name"));
-            Map<String, String> descriptionMap = (Map<String, String>) map.get("description");
-            certificate.setDescription(descriptionMap.get("description"));
-            Map<String, Double> priceMap = (Map<String, Double>) map.get("price");
-            certificate.setPrice(priceMap.get("price"));
-            Map<String, Integer> durationMap = (Map<String, Integer>) map.get("duration");
-            certificate.setDuration(durationMap.get("duration"));
-            Map<String, LocalDateTime> createDateMap = (Map<String, LocalDateTime>) map.get("create_date");
-            certificate.setCreateDate(createDateMap.get("create_date"));
-            Map<String, LocalDateTime> lastUpdateDateMap = (Map<String, LocalDateTime>) map.get("last_update_date");
-            certificate.setLastUpdateDate(lastUpdateDateMap.get("last_update_date"));
-            certificates.add(certificate);
-        }
-
-         */
-        return null;
+        List certificates = (List) out.get("certificates");
+        return certificates;
     }
 
     @Override
