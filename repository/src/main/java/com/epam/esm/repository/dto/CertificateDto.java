@@ -2,11 +2,15 @@ package com.epam.esm.repository.dto;
 
 import com.epam.esm.repository.entity.Certificate;
 import com.epam.esm.repository.entity.Tag;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
+
+
 
 public class CertificateDto {
 
@@ -23,8 +27,10 @@ public class CertificateDto {
 
     @PositiveOrZero(message = "Certificate duration should positive or zero")
     private Integer duration;
-
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm'Z'")
     private LocalDateTime createDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm'Z'")
     private LocalDateTime lastUpdateDate;
     private List<Tag> tags;
 
