@@ -2,6 +2,7 @@ package com.epam.esm.service;
 
 
 import com.epam.esm.repository.dto.CertificateDto;
+import com.epam.esm.service.exception.IncorrectParameterException;
 
 import java.util.List;
 

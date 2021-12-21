@@ -45,7 +45,7 @@ public class CertificateController {
 
     @PostMapping
     public ResponseEntity<CertificateDto> createCertificate(
-            @Valid @RequestBody CertificateDto certificateDto) {
+            @RequestBody CertificateDto certificateDto) {
 
         CertificateDto createdCertificate = certificateService.create(certificateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCertificate);

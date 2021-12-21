@@ -2,6 +2,7 @@ package com.epam.esm.controller.advice;
 
 
 import com.epam.esm.repository.entity.ErrorResponse;
+import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceValidationException;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -37,19 +39,37 @@ public class Advice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<ErrorResponse> handleAllException(Exception e) {
-        String errorCode = String.format("%s%s", INTERNAL_SERVER_ERROR.value(), 00);
+        String errorCode = String.format("%s%d", INTERNAL_SERVER_ERROR.value(), 0);
         ErrorResponse errorResponse =
                 new ErrorResponse(e.getMessage(), errorCode);
         return new ResponseEntity<>(errorResponse, INTERNAL_SERVER_ERROR);
     }
 
+
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
+        String errorCode = String.format("%s%d", METHOD_NOT_ALLOWED.value(), 0);
+        ErrorResponse errorResponse =
+                new ErrorResponse(ex.getMessage(), errorCode);
+        return new ResponseEntity<>(errorResponse, METHOD_NOT_ALLOWED);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return super.handleHttpMediaTypeNotSupported(ex, headers, status, request);
+        String errorCode = String.format("%s%d", UNSUPPORTED_MEDIA_TYPE.value(), 0);
+        ErrorResponse errorResponse =
+                new ErrorResponse(ex.getMessage(), errorCode);
+        return new ResponseEntity<>(errorResponse, UNSUPPORTED_MEDIA_TYPE);
     }
+
+
+
+    @ExceptionHandler(value = {IncorrectParameterException.class})
+    public ResponseEntity<ErrorResponse> handleIncorrectParameterException(IncorrectParameterException e) {
+        String errorCode = String.format("%s%d", BAD_REQUEST.value(), 0);
+        ErrorResponse errorResponse =
+                new ErrorResponse(e.getMessage(), errorCode);
+        return new ResponseEntity<>(errorResponse, BAD_REQUEST);
+    }
+
 }

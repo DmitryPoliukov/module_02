@@ -6,7 +6,9 @@ import com.epam.esm.repository.dao.TagDao;
 import com.epam.esm.repository.dto.TagDto;
 import com.epam.esm.repository.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.IncorrectParameterException;
 import com.epam.esm.service.exception.ResourceException;
+import com.epam.esm.service.validation.TagDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -33,6 +35,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto create(TagDto inputTag) {
+        TagDtoValidator.validate(inputTag);
         Optional<Tag> existingTag = tagDao.read(inputTag.getName());
         return existingTag.orElseGet(() -> tagDao.create(inputTag.toEntity())).toDto();
     }

@@ -23,6 +23,7 @@ public class CertificateDto {
 
     @PositiveOrZero
     private Integer duration;
+
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private List<Tag> tags;
@@ -92,23 +93,6 @@ public class CertificateDto {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-
-    /*
-    StudentDto dto = modelMapper.map(entity, StudentDto.class);
-    Student entity = modelMapper.map(dto, Student.class);
-*/
-
-    public CertificateDto(Certificate entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.description = entity.getDescription();
-        this.price = entity.getPrice();
-        this.duration = entity.getDuration();
-        this.createDate = entity.getCreateDate();
-        this.lastUpdateDate = entity.getLastUpdateDate();
-        this.tags = entity.getTags();
     }
 
     public Certificate toEntity() {
